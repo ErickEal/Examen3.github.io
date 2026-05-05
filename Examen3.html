@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Erick Isaac</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --card: #1a1a26;
+      --border: rgba(255,255,255,0.06);
+      --accent: #00f5c8;
+      --accent2: #7b5ea7;
+      --accent3: #ff6b6b;
+      --text: #e8e8f0;
+      --muted: #7a7a9a;
+      --glow: rgba(0,245,200,0.15);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    #topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60px;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      z-index: 1000;
+    }
+
+    #topbar .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--accent);
+      letter-spacing: -0.5px;
+    }
+
+    #topbar nav {
+      display: flex;
+      gap: 32px;
+    }
+
+    #topbar nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+
+    #topbar nav a:hover,
+    #topbar nav a.active {
+      color: var(--accent);
+    }
+
+    /* ── PAGES ── */
+    .page {
+      display: none;
+      min-height: 100vh;
+      padding-top: 60px;
+      animation: fadeIn 0.4s ease;
+    }
+    .page.visible { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    #home {
+      display: none;
+      min-height: 100vh;
+      padding-top: 60px;
+      animation: fadeIn 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    #home.visible { display: block; }
+
+    .hero {
+      position: relative;
+      min-height: calc(100vh - 60px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+    .orb-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0,245,200,0.2) 0%, transparent 70%);
+      top: -100px; left: -100px;
+      animation: float 8s ease-in-out infinite;
+    }
+    .orb-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(123,94,167,0.25) 0%, transparent 70%);
+      bottom: -50px; right: 100px;
+      animation: float 10s ease-in-out infinite reverse;
+    }
+    .orb-3 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(255,107,107,0.15) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      animation: float 12s ease-in-out infinite 2s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(20px,-20px) scale(1.05); }
+    }
+
+    .hero-content {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      max-width: 780px;
+      padding: 0 20px;
+    }
+
+    .avatar-placeholder {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin: 0 auto 32px;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      border: 3px solid var(--accent);
+      box-shadow: 0 0 40px var(--glow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .avatar-placeholder::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 40%, rgba(0,245,200,0.2));
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: rgba(0,245,200,0.1);
+      border: 1px solid rgba(0,245,200,0.3);
+      color: var(--accent);
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(42px, 7vw, 80px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto 40px;
+      font-weight: 300;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary:hover {
+      background: #00d4ac;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px var(--glow);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      animation: bounce 2s infinite;
+    }
+
+    .scroll-hint::after {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--muted), transparent);
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* Stats bar */
+    .stats-bar {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 80px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      text-align: center;
+    }
+
+    .stat-item .num {
+      font-family: 'Syne', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .stat-item .lbl {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* Nav cards grid */
+    .nav-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 60px 80px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .nav-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--accent-color, transparent) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .nav-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-color, var(--accent));
+      box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+    }
+
+    .nav-card:hover::before { opacity: 0.06; }
+
+    .card-icon {
+      font-size: 36px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .nav-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .nav-card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .card-arrow {
+      position: absolute;
+      top: 28px; right: 28px;
+      color: var(--muted);
+      font-size: 20px;
+      transition: all 0.3s;
+    }
+    .nav-card:hover .card-arrow {
+      color: var(--accent-color, var(--accent));
+      transform: translate(4px,-4px);
+    }
+
+    .page-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 60px 80px 40px;
+    }
+
+    .breadcrumb {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      cursor: pointer;
+    }
+    .breadcrumb:hover { color: var(--accent); }
+
+    .page-header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(36px, 5vw, 60px);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+    }
+
+    .page-header h1 span {
+      color: var(--accent);
+    }
+
+    .page-header p {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 17px;
+      max-width: 560px;
+    }
+
+    .page-body {
+      padding: 60px 80px;
+      max-width: 1200px;
+    }
+
+    /* ── SOBRE MÍ ── */
+    .sobre-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+      padding: 0 100px;
+    }
+
+    .sobre-img {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      position:relative;
+      width: 60%;
+      height: 60%;
+    }
+
+    .sobre-img img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .sobre-img .img-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(0,0,0,0.7);
+      padding: 10px 16px;
+      font-size: 12px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .sobre-img::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,245,200,0.1), transparent 50%, rgba(123,94,167,0.1));
+    }
+
+    .sobre-info h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .sobre-info p {
+      color: var(--muted);
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .tag {
+      background: rgba(0,245,200,0.08);
+      border: 1px solid rgba(0,245,200,0.2);
+      color: var(--accent);
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 13px;
+    }
+
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 32px;
+    }
+    .info-table td {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .info-table td:first-child {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      width: 120px;
+    }
+
+    /* ── MÚSICA ── */
+    .music-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .album-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    .album-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0,245,200,0.3);
+    }
+
+    .album-art {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      position: relative;
+    }
+
+    .album-info {
+      padding: 16px;
+    }
+
+    .album-info h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .album-info .artist {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .genre-badge {
+      display: inline-block;
+      background: rgba(123,94,167,0.15);
+      color: #a78bca;
+      border: 1px solid rgba(123,94,167,0.3);
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 11px;
+      margin-top: 8px;
+    }
+
+    .player-bar {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 28px;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .player-icon { font-size: 36px; }
+
+    .player-info { flex: 1; }
+    .player-info h4 { font-family: 'Syne', sans-serif; font-weight: 700; }
+    .player-info p { font-size: 13px; color: var(--muted); }
+
+    .progress {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-top: 10px;
+      position: relative;
+    }
+    .progress::after {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 40%;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .player-controls {
+      display: flex;
+      gap: 12px;
+      font-size: 22px;
+    }
+
+    .ctrl-btn {
+      cursor: pointer;
+      transition: color 0.2s;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 22px;
+    }
+    .ctrl-btn.play {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      color: #000;
+      font-size: 18px;
+    }
+    .ctrl-btn:hover { color: var(--accent); }
+
+    .section-subtitle {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      margin-top: 40px;
+      color: var(--text);
+    }
+
+    .hobby-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .hobby-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      transition: all 0.3s;
+    }
+
+    .hobby-card:hover {
+      border-color: var(--accent-color, rgba(0,245,200,0.3));
+      transform: translateY(-3px);
+    }
+
+    .hobby-icon { font-size: 40px; margin-bottom: 16px; }
+
+    .hobby-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .hobby-card p { color: var(--muted); font-size: 14px; line-height: 1.7; }
+
+    .level-bar {
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      margin-top: 16px;
+      overflow: hidden;
+    }
+
+    .level-fill {
+      height: 100%;
+      background: linear-gradient(to right, var(--accent), var(--accent2));
+      border-radius: 3px;
+      transition: width 1s ease;
+    }
+
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .tech-chip {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 16px;
+      text-align: center;
+      transition: all 0.3s;
+      cursor: default;
+    }
+
+    .tech-chip:hover {
+      border-color: var(--accent);
+      background: rgba(0,245,200,0.05);
+      transform: translateY(-3px);
+    }
+
+    .tech-chip .tech-ico { font-size: 32px; margin-bottom: 10px; display: block; }
+    .tech-chip .tech-name { font-size: 13px; font-weight: 600; }
+    .tech-chip .tech-lvl { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 16px;
+      transition: all 0.3s;
+    }
+    .project-card:hover {
+      border-color: rgba(0,245,200,0.3);
+      transform: translateY(-2px);
+    }
+
+    .project-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .project-card p { color: var(--muted); font-size: 14px; }
+
+    .project-tags { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+    .ptag {
+      background: rgba(0,245,200,0.07);
+      color: var(--accent);
+      border: 1px solid rgba(0,245,200,0.2);
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 12px;
+    }
+
+    .movie-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px;
+    }
+
+    .movie-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .movie-card:hover {
+      transform: scale(1.03);
+      border-color: rgba(255,107,107,0.4);
+    }
+
+    .movie-poster {
+      aspect-ratio: 2/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 56px;
+      position: relative;
+    }
+
+    .movie-card:hover .movie-overlay {
+      opacity: 1;
+    }
+
+    .movie-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 14px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .movie-rating {
+      background: var(--accent3);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .movie-info {
+      padding: 12px;
+    }
+
+    .movie-info h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .movie-info p {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .fav-badge {
+      position: absolute;
+      top: 8px; right: 8px;
+      background: var(--accent3);
+      color: #fff;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 100px;
+      font-weight: 700;
+    }
+
+    .game-featured {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .game-hero-img {
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, #0f3460, #16213e, #1a1a2e);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 72px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .game-hero-img::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+    }
+
+    .game-hero-title {
+      position: absolute;
+      bottom: 20px; left: 20px;
+    }
+
+    .game-hero-title h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .game-hero-title p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .game-hero-img .img-caption {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: rgba(0,0,0,0.6);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .game-stats-side {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .gstat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .gstat .gl { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+    .gstat .gv { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: var(--accent); }
+
+    .game-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .game-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.3s;
+    }
+
+    .game-item:hover {
+      border-color: rgba(0,245,200,0.3);
+      transform: translateX(4px);
+    }
+
+    .game-ico { font-size: 32px; }
+
+    .game-item h4 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; }
+    .game-item p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    .hours-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-top: 8px;
+    }
+    .hours-fill {
+      height: 100%;
+      background: linear-gradient(to right, var(--accent2), var(--accent));
+      border-radius: 2px;
+    }
+
+    @media (max-width: 768px) {
+      #topbar { padding: 0 20px; }
+      #topbar nav { gap: 16px; }
+      #topbar nav a { font-size: 11px; }
+      .page-header { padding: 40px 24px 30px; }
+      .page-body { padding: 40px 24px; }
+      .stats-bar { grid-template-columns: repeat(2,1fr); padding: 24px; }
+      .nav-grid { padding: 40px 24px; }
+      .sobre-grid { grid-template-columns: 1fr; }
+      .game-featured { grid-template-columns: 1fr; }
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 40px 0;
+    }
+  </style>
+</head>
+<body>
+  <header id="topbar">
+    <div class="logo" onclick="showPage('home')" style="cursor:pointer;">EI·EG</div>
+    <nav>
+      <a onclick="showPage('sobre-mi')">Sobre mí</a>
+      <a onclick="showPage('musica')">Música</a>
+      <a onclick="showPage('hobbies')">Hobbies</a>
+      <a onclick="showPage('programacion')">Programación</a>
+      <a onclick="showPage('peliculas')">Películas</a>
+      <a onclick="showPage('videojuegos')">Videojuegos</a>
+    </nav>
+  </header>
+
+  <!-- ══════════════════════════════════
+       HOME
+  ══════════════════════════════════ -->
+  <div id="home" class="page visible">
+    <section class="hero">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+
+      <div class="hero-content">
+        <!-- IMAGEN: Foto de perfil de Erick (retrato, 300x300px circular) -->
+        <div class="avatar-placeholder">🧑‍💻</div>
+
+        <div class="hero-tag">✦ Pagina Web Personal</div>
+
+        <h1>Erick Isaac<br><span>Echeverria Goicochea</span></h1>
+
+        <p>Estudiante de programación, apasionado por la tecnología, la música y los videojuegos. Bienvenido a mi espacio digital.</p>
+
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="showPage('sobre-mi')">Conóceme →</button>
+          <button class="btn-secondary" onclick="showPage('programacion')">Ver proyectos</button>
+        </div>
+      </div>
+
+    </section>
+
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="num">6+</div>
+        <div class="lbl">Tecnologías</div>
+      </div>
+      <div class="stat-item">
+        <div class="num">∞</div>
+        <div class="lbl">Horas de música</div>
+      </div>
+      <div class="stat-item">
+        <div class="num">100+</div>
+        <div class="lbl">Películas vistas</div>
+      </div>
+      <div class="stat-item">
+        <div class="num">500+</div>
+        <div class="lbl">Hrs en videojuegos</div>
+      </div>
+    </div>
+
+    <div class="nav-grid">
+      <div class="nav-card" onclick="showPage('sobre-mi')" style="--accent-color: #00f5c8;">
+        <span class="card-icon">👤</span>
+        <span class="card-arrow">↗</span>
+        <h3>Sobre mí</h3>
+        <p>Quién soy, qué estudio y mis metas personales.</p>
+      </div>
+      <div class="nav-card" onclick="showPage('musica')" style="--accent-color: #7b5ea7;">
+        <span class="card-icon">🎵</span>
+        <span class="card-arrow">↗</span>
+        <h3>Música</h3>
+        <p>Los géneros, artistas y álbumes que definen mi sonido.</p>
+      </div>
+      <div class="nav-card" onclick="showPage('hobbies')" style="--accent-color: #ff9f43;">
+        <span class="card-icon">🎯</span>
+        <span class="card-arrow">↗</span>
+        <h3>Hobbies</h3>
+        <p>Las actividades que me apasionan fuera del estudio.</p>
+      </div>
+      <div class="nav-card" onclick="showPage('programacion')" style="--accent-color: #00f5c8;">
+        <span class="card-icon">💻</span>
+        <span class="card-arrow">↗</span>
+        <h3>Programación</h3>
+        <p>Lenguajes, tecnologías y proyectos que estoy desarrollando.</p>
+      </div>
+      <div class="nav-card" onclick="showPage('peliculas')" style="--accent-color: #ff6b6b;">
+        <span class="card-icon">🎬</span>
+        <span class="card-arrow">↗</span>
+        <h3>Películas</h3>
+        <p>Mi colección favorita de cine y las que más me han marcado.</p>
+      </div>
+      <div class="nav-card" onclick="showPage('videojuegos')" style="--accent-color: #7b5ea7;">
+        <span class="card-icon">🎮</span>
+        <span class="card-arrow">↗</span>
+        <h3>Videojuegos</h3>
+        <p>Los títulos que más he jugado y cuántas horas me han robado.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SOBRE MÍ
+  ══════════════════════════════════ -->
+  <div id="sobre-mi" class="page">
+    <div class="page-header">
+      <div class="breadcrumb" onclick="showPage('home')">← Inicio</div>
+      <h1>Sobre <span>mí</span></h1>
+      <p>Un poco sobre quién soy, de dónde vengo y hacia dónde voy.</p>
+    </div>
+    <div class="page-body">
+      <div class="sobre-grid">
+          <div class="sobre-img">
+            <img class="foto" src="resources/yo.jpeg" alt="Foto mia" onerror="..." />
+          </div>
+        <div class="sobre-info">
+          <h2>Hola, soy Erick 👋</h2>
+          <p>
+            Soy Erick Isaac Echeverria Goicochea, estudiante de Ingeniería en Computación con una fuerte pasión por crear cosas desde cero. Me encanta combinar la lógica del código con la creatividad del diseño.
+          </p>
+          <p>
+            Cuando no estoy frente a una pantalla programando, puedes encontrarme escuchando música, completando videojuegos o viendo alguna película de ciencia ficción. Creo que la tecnología y el entretenimiento van de la mano.
+          </p>
+          <p>
+            Mi objetivo es convertirme en un desarrollador full-stack, y algún día lanzar mis propios proyectos digitales.
+          </p>
+          <div class="tags">
+            <span class="tag">Desarrollador</span>
+            <span class="tag">Gamer</span>
+            <span class="tag">Amante del cine</span>
+          </div>
+          <table class="info-table">
+            <tr><td>Nombre</td><td>Erick Isaac Echeverria Goicochea</td></tr>
+            <tr><td>Ciudad</td><td>CDMX</td></tr>
+            <tr><td>Estudios</td><td>Ingeniería en Computación</td></tr>
+            <tr><td>Idiomas</td><td>Español · Inglés </td></tr>
+            <tr><td>Intereses</td><td>Programación · Música · Videojuegos · Cine</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       MÚSICA
+  ══════════════════════════════════ -->
+  <div id="musica" class="page">
+    <div class="page-header">
+      <div class="breadcrumb" onclick="showPage('home')">← Inicio</div>
+      <h1>Mi <span>música</span></h1>
+      <p>Los géneros y artistas que me acompañan mientras programo, descanso y vivo.</p>
+    </div>
+    <div class="page-body">
+
+      <!-- Player decorativo -->
+      <div class="player-bar">
+        <div class="player-icon">🎵</div>
+        <div class="player-info">
+          <h4>En reproducción ahora</h4>
+          <p>Mis favoritos · 1170 canciones</p>
+          <div class="progress"></div>
+        </div>
+        <div class="player-controls">
+          <button class="ctrl-btn">⏮</button>
+          <button class="ctrl-btn play">▶</button>
+          <button class="ctrl-btn">⏭</button>
+        </div>
+      </div>
+
+      <h2 class="section-subtitle">Géneros favoritos</h2>
+      <div class="tags" style="margin-bottom: 36px;">
+        <span class="tag" style="--accent-color:#7b5ea7; background:rgba(123,94,167,0.1); border-color:rgba(123,94,167,0.3); color:#a78bca;">Hip-hop &amp; Rap</span>
+        <span class="tag">Electronic</span>
+        <span class="tag" style="background:rgba(255,107,107,0.1); border-color:rgba(255,107,107,0.3); color:#ff9999;">House</span>
+        <span class="tag" style="background:rgba(255,159,67,0.1); border-color:rgba(255,159,67,0.3); color:#ffb967;">R&amp;B · Soul</span>
+        <span class="tag" style="background:rgba(123,94,167,0.1); border-color:rgba(123,94,167,0.3); color:#a78bca;">Jazz House</span>
+        <span class="tag">Lo-fi</span>
+      </div>
+
+      <h2 class="section-subtitle">Álbumes &amp; Artistas favoritos</h2>
+      <div class="music-grid">
+        <div class="album-card">
+          <div class="album-art" style="background-image: url(resources/ts.jpg); background-size: cover; background-position: center;"></div>
+          <div class="album-info">
+            <h4>Travis Scott</h4>
+            <p class="artist">Rodeo</p>
+            <span class="genre-badge">Hip-Hop · Rap</span>
+          </div>
+        </div>
+        <div class="album-card">
+          <div class="album-art" style="background-image: url(resources/lla.jpg); background-size: cover; background-position: center;"></div>
+          <div class="album-info">
+            <h4>A$AP Rocky</h4>
+            <p class="artist">LONG.LIVE.A$AP</p>
+            <span class="genre-badge">Hip-Hop · Rap</span>
+          </div>
+        </div>
+        <div class="album-card">
+          <div class="album-art" style="background-image: url(resources/p&p.jpg); background-size: cover; background-position: center;"></div>
+          <div class="album-info">
+            <h4>Polo &amp; Pan</h4>
+            <p class="artist">Cyclorama</p>
+            <span class="genre-badge">Electronic</span>
+          </div>
+        </div>
+        <div class="album-card">
+          <div class="album-art" style="background-image: url(resources/volcano.jpg); background-size: cover; background-position: center;"></div>
+          <div class="album-info">
+            <h4>Jungle</h4>
+            <p class="artist">Volcano</p>
+            <span class="genre-badge">Electronic</span>
+          </div>
+        </div>
+        <div class="album-card">
+          <div class="album-art" style="background-image: url(resources/kaytra.jpg); background-size: cover; background-position: center;"></div>
+          <div class="album-info">
+            <h4>99.9%</h4>
+            <p class="artist">Kaytranada</p>
+            <span class="genre-badge">Electronic</span>
+          </div>
+        </div>
+        <div class="album-card">
+          <div class="album-art" style="background-image: url(resources/altons.jpg); background-size: cover; background-position: center;"></div>
+          <div class="album-info">
+            <h4>The Altons</h4>
+            <p class="artist">When You Go</p>
+            <span class="genre-badge">R&amp;B · Soul</span>
+          </div>
+        </div>
+        <div class="album-card">
+          <div class="album-art" style="background-image: url(resources/belioz.jpg); background-size: cover; background-position: center;"></div>
+          <div class="album-info">
+            <h4>Berlioz</h4>
+            <p class="artist">open this wall</p>
+            <span class="genre-badge">Electronic</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       HOBBIES
+  ══════════════════════════════════ -->
+  <div id="hobbies" class="page">
+    <div class="page-header">
+      <div class="breadcrumb" onclick="showPage('home')">← Inicio</div>
+      <h1>Mis <span>hobbies</span></h1>
+      <p>Las actividades que me llenan de energía y me hacen ser quien soy.</p>
+    </div>
+    <div class="page-body">
+      <div class="hobby-list">
+        <div class="hobby-card" style="--accent-color:rgba(0,245,200,0.3);">
+          <div class="hobby-icon">💻</div>
+          <h3>Programar por placer</h3>
+          <p>Más allá de la escuela, me gusta crear pequeños proyectos: tools, apps web, scripts útiles. Además formo parte del Club de Programacion Competitiva de la facultad, por lo que el proceso de resolver problemas me da una satisfacción única.</p>
+          <div class="level-bar"><div class="level-fill" style="width:90%;"></div></div>
+        </div>
+        <div class="hobby-card" style="--accent-color:rgba(123,94,167,0.3);">
+          <div class="hobby-icon">🎮</div>
+          <h3>Videojuegos</h3>
+          <p>Juego desde pequeño. Me gustan los RPG de mundo abierto, los shooters competitivos y los juegos de estrategia. Es mi forma de desconectarme y al mismo tiempo pensar.</p>
+          <div class="level-bar"><div class="level-fill" style="width:95%;"></div></div>
+        </div>
+        <div class="hobby-card" style="--accent-color:rgba(255,159,67,0.3);">
+          <div class="hobby-icon">🎵</div>
+          <h3>Música</h3>
+          <p>Escucho música prácticamente todo el día. También intento aprender piano en mis ratos libres. La música es el fondo perfecto para todo lo que hago.</p>
+          <div class="level-bar"><div class="level-fill" style="width:85%;"></div></div>
+        </div>
+        <div class="hobby-card" style="--accent-color:rgba(255,107,107,0.3);">
+          <div class="hobby-icon">🎬</div>
+          <h3>Cine</h3>
+          <p>Soy muy fan de las películas de ciencia ficción, thrillers psicológicos y terror. Me gusta analizar la narrativa y los efectos visuales más allá de la historia.</p>
+          <div class="level-bar"><div class="level-fill" style="width:80%;"></div></div>
+        </div>
+        <div class="hobby-card" style="--accent-color:rgba(84,160,255,0.3);">
+          <div class="hobby-icon">📚</div>
+          <h3>Leer sobre tecnología</h3>
+          <p>Me mantengo al día con artículos, blogs y documentaciones. Me fascina todo lo relacionado con IA, diseño de sistemas y tendencias.</p>
+          <div class="level-bar"><div class="level-fill" style="width:70%;"></div></div>
+        </div>
+        <div class="hobby-card" style="--accent-color:rgba(0,245,200,0.3);">
+          <div class="hobby-icon">🚴</div>
+          <h3>Salir a andar</h3>
+          <p>Para despejar la mente, salgo a caminar o andar en bici. Es mi manera de descansar el cerebro y volver con energía a la pantalla.</p>
+          <div class="level-bar"><div class="level-fill" style="width:60%;"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PROGRAMACIÓN
+  ══════════════════════════════════ -->
+  <div id="programacion" class="page">
+    <div class="page-header">
+      <div class="breadcrumb" onclick="showPage('home')">← Inicio</div>
+      <h1>Pro<span>gramación</span></h1>
+      <p>Las herramientas, lenguajes y proyectos que estoy construyendo.</p>
+    </div>
+    <div class="page-body">
+      <h2 class="section-subtitle" style="margin-top:0;">Stack tecnológico</h2>
+      <div class="tech-grid">
+        <div class="tech-chip">
+          <span class="tech-ico">🌐</span>
+          <div class="tech-name">HTML5</div>
+          <div class="tech-lvl">Intermedio</div>
+        </div>
+        <div class="tech-chip">
+          <span class="tech-ico">🎨</span>
+          <div class="tech-name">CSS3</div>
+          <div class="tech-lvl">Intermedio</div>
+        </div>
+        <div class="tech-chip">
+          <span class="tech-ico">⚡</span>
+          <div class="tech-name">JavaScript</div>
+          <div class="tech-lvl">Básico</div>
+        </div>
+        <div class="tech-chip">
+          <span class="tech-ico">♨️</span>
+          <div class="tech-name">Java</div>
+          <div class="tech-lvl">Básico</div>
+        </div>
+        <div class="tech-chip">
+          <span class="tech-ico">🐍</span>
+          <div class="tech-name">Python</div>
+          <div class="tech-lvl">Intermedio</div>
+        </div>
+        <div class="tech-chip">
+          <span class="tech-ico">©️</span>
+          <div class="tech-name">C</div>
+          <div class="tech-lvl">Avanzado</div>
+        </div>
+        <div class="tech-chip">
+          <span class="tech-ico">©️➕➕</span>
+          <div class="tech-name">C++</div>
+          <div class="tech-lvl">Avanzado</div>
+        </div>
+        <div class="tech-chip">
+          <span class="tech-ico">🗄️</span>
+          <div class="tech-name">SQL</div>
+          <div class="tech-lvl">Intermedio</div>
+        </div>
+        <div class="tech-chip">
+          <span class="tech-ico">🐙</span>
+          <div class="tech-name">Git</div>
+          <div class="tech-lvl">Intermedio</div>
+        </div>
+        <div class="tech-chip">
+          <span class="tech-ico">🐋</span>
+          <div class="tech-name">Docker</div>
+          <div class="tech-lvl">Básico</div>
+        </div>
+        <div class="tech-chip">
+          <span class="tech-ico">⚛️</span>
+          <div class="tech-name">React</div>
+          <div class="tech-lvl">Próximamente</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <h2 class="section-subtitle">Proyectos destacados</h2>
+
+      <div class="project-card">
+        <h3>🌐 ErickWEB — Portafolio Personal</h3>
+        <p>Este mismo sitio web. Desarrollado desde cero con HTML, CSS y JavaScript puro, sin frameworks. Diseño responsivo con múltiples secciones temáticas.</p>
+        <div class="project-tags">
+          <span class="ptag">HTML5</span>
+          <span class="ptag">CSS3</span>
+          <span class="ptag">JavaScript</span>
+          <span class="ptag">Diseño Web</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <h3>🎲 OOP Casino Project — Java</h3>
+        <p>
+          Simulación de casino desarrollada en equipo bajo el paradigma de Programación Orientada a Objetos. 
+          Implementa juegos y sistemas complejos utilizando encapsulamiento, herencia, polimorfismo y abstracción para lograr un código modular y escalable.
+        </p>
+        <div class="project-tags">
+          <span class="ptag">Java</span>
+          <span class="ptag">OOP</span>
+          <span class="ptag">NetBeans</span>
+          <span class="ptag">Git</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <h3>🚌 Ticket Management System — C</h3>
+        <p>
+          Sistema de gestión de boletos de autobús desarrollado en equipo. Implementa persistencia de datos mediante manejo de archivos y optimización de memoria a través de estructuras y punteros, todo bajo una interfaz de consola intuitiva.
+        </p>
+        <div class="project-tags">
+          <span class="ptag">C</span>
+          <span class="ptag">File Handling</span>
+          <span class="ptag">Estructuras</span>
+          <span class="ptag">VS Code</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <h3>🎙️ Jarvis: Asistente Virtual con IA</h3>
+        <p>
+          Asistente inteligente capaz de interactuar con el sistema operativo mediante reconocimiento de voz. Implementa modelos de KNN y MFCC para identificación biométrica del hablante y Árboles de Decisión para la clasificación de intenciones y ejecución de tareas automatizadas.
+        </p>
+        <div class="project-tags">
+          <span class="ptag">Python</span>
+          <span class="ptag">Machine Learning</span>
+          <span class="ptag">NLP</span>
+          <span class="ptag">Tkinter</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <h3>🗄️ Sistema de Inventario — BD con SQL</h3>
+        <p>Base de datos relacional para una tienda ficticia. Incluye tablas de productos, clientes y pedidos con consultas JOIN y reportes generados en SQL.</p>
+        <div class="project-tags">
+          <span class="ptag">SQL</span>
+          <span class="ptag">MySQL</span>
+          <span class="ptag">Base de datos</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PELÍCULAS
+  ══════════════════════════════════ -->
+  <div id="peliculas" class="page">
+    <div class="page-header">
+      <div class="breadcrumb" onclick="showPage('home')">← Inicio</div>
+      <h1>Mis <span>películas</span></h1>
+      <p>El cine que me inspira, emociona y hace pensar.</p>
+    </div>
+    <div class="page-body">
+      <h2 class="section-subtitle" style="margin-top:0;">Géneros favoritos</h2>
+      <div class="tags" style="margin-bottom:36px;">
+        <span class="tag" style="background:rgba(255,107,107,0.1); border-color:rgba(255,107,107,0.3); color:#ff9999;">Ciencia ficción</span>
+        <span class="tag">Thriller</span>
+        <span class="tag" style="background:rgba(123,94,167,0.1); border-color:rgba(123,94,167,0.3); color:#a78bca;">Drama</span>
+        <span class="tag">Suspenso</span>
+        <span class="tag" style="background:rgba(255,159,67,0.1); border-color:rgba(255,159,67,0.3); color:#ffb967;">Acción</span>
+        <span class="tag">Terror</span>
+      </div>
+
+      <h2 class="section-subtitle">Mis favoritas</h2>
+      <div class="movie-grid">
+
+        <div class="movie-card">
+          <div class="movie-poster" style="background:linear-gradient(135deg,#2d3436,#636e72);">
+            🌀
+            <div class="fav-badge">❤️ TOP</div>
+            <div class="movie-overlay">
+              <span>La película que te hace cuestionar todo lo que ves.</span>
+            </div>
+          </div>
+          <div class="movie-info">
+            <h4>Inception</h4>
+            <p>Thriller / Sci-Fi · 2010</p>
+          </div>
+        </div>
+
+        <div class="movie-card">
+          <div class="movie-poster" style="background:linear-gradient(135deg,#141e30,#243b55);">
+            ⏳
+            <div class="movie-overlay">
+              <span>El tiempo no fluye en una sola dirección.</span>
+            </div>
+          </div>
+          <div class="movie-info">
+            <h4>Tenet</h4>
+            <p>Sci-Fi / Acción · 2020</p>
+          </div>
+        </div>
+
+        <div class="movie-card">
+          <div class="movie-poster" style="background:linear-gradient(135deg,#3e5151,#decba4);">
+            📦
+            <div class="movie-overlay">
+              <span>Los siete pecados capitales como nunca los viste.</span>
+            </div>
+          </div>
+          <div class="movie-info">
+            <h4>Seven</h4>
+            <p>Thriller / Crimen · 1995</p>
+          </div>
+        </div>
+
+        <div class="movie-card">
+          <div class="movie-poster" style="background:linear-gradient(135deg,#870000,#190a05);">
+            🔪
+            <div class="movie-overlay">
+              <span>Un misterio moderno donde todos son sospechosos.</span>
+            </div>
+          </div>
+          <div class="movie-info">
+            <h4>Knives Out</h4>
+            <p>Misterio / Comedia · 2019</p>
+          </div>
+        </div>
+
+        <div class="movie-card">
+          <div class="movie-poster" style="background:linear-gradient(135deg,#000000,#4f4f4f);">
+            ✈️
+            <div class="movie-overlay">
+              <span>No puedes engañar a la muerte.</span>
+            </div>
+          </div>
+          <div class="movie-info">
+            <h4>Final Destination</h4>
+            <p>Terror / Suspense · 2000</p>
+          </div>
+        </div>
+
+        <div class="movie-card">
+          <div class="movie-poster" style="background:linear-gradient(135deg,#8A2387,#E94057);">
+            📷
+            <div class="movie-overlay">
+              <span>Si huyes te atrapan, si te quedas te comen.</span>
+            </div>
+          </div>
+          <div class="movie-info">
+            <h4>City of God</h4>
+            <p>Drama / Crimen · 2002</p>
+          </div>
+        </div>
+
+        <div class="movie-card">
+          <div class="movie-poster" style="background:linear-gradient(135deg,#1F1C2C,#928DAB);">
+            🧩
+            <div class="movie-overlay">
+              <span>Descubre qué le regalas a quien ya lo tiene todo.</span>
+            </div>
+          </div>
+          <div class="movie-info">
+            <h4>The Game</h4>
+            <p>Thriller / Misterio · 1997</p>
+          </div>
+        </div>
+
+        <div class="movie-card">
+          <div class="movie-poster" style="background:linear-gradient(135deg,#C04848,#480048);">
+            ⛓️
+            <div class="movie-overlay">
+              <span>La venganza tiene un nombre y la "D" es muda.</span>
+            </div>
+          </div>
+          <div class="movie-info">
+            <h4>Django Unchained</h4>
+            <p>Western / Acción · 2012</p>
+          </div>
+        </div>
+
+        <div class="movie-card">
+          <div class="movie-poster" style="background:linear-gradient(135deg,#2980B9,#6DD5FA);">
+            📼
+            <div class="movie-overlay">
+              <span>Memorias fragmentadas de unas vacaciones inolvidables.</span>
+            </div>
+          </div>
+          <div class="movie-info">
+            <h4>Aftersun</h4>
+            <p>Drama · 2022</p>
+          </div>
+        </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       VIDEOJUEGOS
+  ══════════════════════════════════ -->
+  <div id="videojuegos" class="page">
+    <div class="page-header">
+      <div class="breadcrumb" onclick="showPage('home')">← Inicio</div>
+      <h1>Video<span>juegos</span></h1>
+      <p>Los mundos digitales donde paso incontables horas.</p>
+    </div>
+    <div class="page-body">
+
+      <!-- Featured game -->
+      <div class="game-featured">
+        <!-- IMAGEN: artwork o screenshot del juego favorito (ej. GTA V, Minecraft, Valorant) -->
+        <div class="game-hero-img">
+          <img src="resources/kcd2.jpg" alt="Kingdome Come Deliverance 2" class="game-hero-img">
+          <div class="game-hero-title">
+            <h2>Juego Favorito</h2>
+            <p>El que más horas me ha quitado</p>
+          </div>
+        </div>
+        <div class="game-stats-side">
+          <div class="gstat">
+            <div class="gl">Horas totales jugadas</div>
+            <div class="gv">500+</div>
+          </div>
+          <div class="gstat">
+            <div class="gl">Juegos terminados</div>
+            <div class="gv">50+</div>
+          </div>
+          <div class="gstat">
+            <div class="gl">Plataformas</div>
+            <div class="gv">PC · PS5</div>
+          </div>
+          <div class="gstat">
+            <div class="gl">Género favorito</div>
+            <div class="gv">RPG / FPS</div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="section-subtitle">Top juegos</h2>
+      <div class="game-list">
+        <div class="game-item">
+          <div class="game-ico">⛏️</div>
+          <div>
+            <h4>Minecraft</h4>
+            <p>Survival / Sandbox</p>
+            <div class="hours-bar"><div class="hours-fill" style="width:90%;"></div></div>
+          </div>
+        </div>
+        <div class="game-item">
+          <div class="game-ico">⚔️</div>
+          <div>
+            <h4>Kingdom Come Deliverance 1,2</h4>
+            <p>RPG / Aventura</p>
+            <div class="hours-bar"><div class="hours-fill" style="width:80%;"></div></div>
+          </div>
+        </div>
+        <div class="game-item">
+          <div class="game-ico">☠︎︎</div>
+          <div>
+            <h4>Wath Dogs 2</h4>
+            <p>Acción / Mundo Abierto</p>
+            <div class="hours-bar"><div class="hours-fill" style="width:80%;"></div></div>
+          </div>
+        </div>
+        <div class="game-item">
+          <div class="game-ico">🐎</div>
+          <div>
+            <h4>Red Dead Redemption 2</h4>
+            <p>Aventura / Mundo Abierto</p>
+            <div class="hours-bar"><div class="hours-fill" style="width:80%;"></div></div>
+          </div>
+        </div>
+        <div class="game-item">
+          <div class="game-ico">🔫</div>
+          <div>
+            <h4>Fortnite</h4>
+            <p>Battle Royale</p>
+            <div class="hours-bar"><div class="hours-fill" style="width:70%;"></div></div>
+          </div>
+        </div>
+        <div class="game-item">
+          <div class="game-ico">🌍</div>
+          <div>
+            <h4>GTA V</h4>
+            <p>Open World / Action</p>
+            <div class="hours-bar"><div class="hours-fill" style="width:75%;"></div></div>
+          </div>
+        </div>
+        <div class="game-item">
+          <div class="game-ico">🧭</div>
+          <div>
+            <h4>Uncharted</h4>
+            <p>Acción / Aventura</p>
+            <div class="hours-bar"><div class="hours-fill" style="width:60%;"></div></div>
+          </div>
+        </div>
+        <div class="game-item">
+          <div class="game-ico">🧟</div>
+          <div>
+            <h4>The Last of Us Part 1,2</h4>
+            <p>Acción / Supervivencia</p>
+            <div class="hours-bar"><div class="hours-fill" style="width:50%;"></div></div>
+          </div>
+        </div>
+        <div class="game-item">
+          <div class="game-ico">🕷️</div>
+          <div>
+            <h4>Marvel's Spider-Man</h4>
+            <p>Acción / Aventura</p>
+            <div class="hours-bar"><div class="hours-fill" style="width:50%;"></div></div>
+          </div>
+        </div>
+        <div class="game-item">
+          <div class="game-ico">🚇</div>
+          <div>
+            <h4>Metro Exodus</h4>
+            <p>Acción / Aventura</p>
+            <div class="hours-bar"><div class="hours-fill" style="width:50%;"></div></div>
+          </div>
+        </div>
+        <div class="game-item">
+          <div class="game-ico">💀</div>
+          <div>
+            <h4>Cyberpunk 2077</h4>
+            <p>Ciencia Ficción / RPG</p>
+            <div class="hours-bar"><div class="hours-fill" style="width:50%;"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <h2 class="section-subtitle">Plataformas &amp; géneros preferidos</h2>
+      <div class="tags">
+        <span class="tag">🖥️ PC Gaming</span>
+        <span class="tag">🎮 PS5</span>
+        <span class="tag" style="background:rgba(123,94,167,0.1); border-color:rgba(123,94,167,0.3); color:#a78bca;">⛏️ Survival</span>
+        <span class="tag">⚔️ RPG</span>
+        <span class="tag" style="background:rgba(255,107,107,0.1); border-color:rgba(255,107,107,0.3); color:#ff9999;">🗡️ Acción</span>
+        <span class="tag">🧠 Estrategia</span>
+        <span class="tag" style="background:rgba(255,159,67,0.1); border-color:rgba(255,159,67,0.3); color:#ffb967;">🌍 Open World</span>
+        <span class="tag">🔫 Battle Royale</span>
+        <span class="tag" style="background:rgba(203, 122, 46, 0.1); border-color:rgba(41, 79, 204, 0.3); color:#ffb967;">⚔️ Aventura</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const pages = ['home','sobre-mi','musica','hobbies','programacion','peliculas','videojuegos'];
+    const navLinks = document.querySelectorAll('#topbar nav a');
+
+    function showPage(id) {
+      pages.forEach(p => {
+        const el = document.getElementById(p);
+        if (el) el.classList.remove('visible');
+      });
+      const target = document.getElementById(id);
+      if (target) target.classList.add('visible');
+
+      // Update active nav link
+      navLinks.forEach(a => {
+        const onclick = a.getAttribute('onclick');
+        if (onclick && onclick.includes(`'${id}'`)) {
+          a.classList.add('active');
+        } else {
+          a.classList.remove('active');
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    const observer = new MutationObserver(() => {
+      const hobbyPage = document.getElementById('hobbies');
+      if (hobbyPage && hobbyPage.classList.contains('visible')) {
+        document.querySelectorAll('.level-fill').forEach(bar => {
+          const width = bar.style.width;
+          bar.style.width = '0%';
+          setTimeout(() => { bar.style.width = width; }, 200);
+        });
+      }
+    });
+
+    document.getElementById('hobbies') && observer.observe(document.getElementById('hobbies'), { attributes: true, attributeFilter: ['class'] });
+  </script>
+</body>
+</html>
